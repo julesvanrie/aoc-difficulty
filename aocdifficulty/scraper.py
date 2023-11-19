@@ -40,23 +40,27 @@ def get_leaderboard(year: int, day: int):
 
     leader_path = os.path.join(DATA_PATH, str(year), f"{day}.pkl")
 
+    # Load file if it already exists, if not, try in the temp location
     if not os.path.isfile(leader_path):
-        one_star_results, two_star_results = scrape_leaderboard(year, day)
-        print("Scraping the leaderboard")
-
-        # If the day's leaderboard is complete, cache it locally
-        if len(two_star_results) == 100:
-            print("Saving the data to cache")
-            if not os.path.isdir(os.path.dirname(leader_path)):
-                os.mkdir(os.path.dirname(leader_path))
-            with open(leader_path, 'wb') as file:
-                pickle.dump(obj=[one_star_results, two_star_results],
-                            file=file)
-
-    else:
+        leader_path = os.path.join(TMP_LEADERBOARD_PATH, str(year), f"{day}.pkl")
+    if os.path.isfile(leader_path):
         with open(leader_path, 'rb') as file:
             data = pickle.load(file)
-            one_star_results, two_star_results = data
+            return data
+
+    print("Scraping the leaderboard")
+    one_star_results, two_star_results = scrape_leaderboard(year, day)
+
+    # If the day's leaderboard is complete, cache it locally
+    if len(two_star_results) == 100:
+        # Make sure the directory exists
+        if not os.path.isdir(os.path.dirname(leader_path)):
+            os.makedirs(os.path.dirname(leader_path))
+        # Save the results
+        with open(leader_path, 'wb') as file:
+            pickle.dump(obj=[one_star_results, two_star_results],
+                        file=file)
+        print("Saved the leaderboard to cache")
 
     return one_star_results, two_star_results
 
