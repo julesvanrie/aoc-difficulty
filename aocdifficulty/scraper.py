@@ -8,7 +8,7 @@ import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 
-data_dir = "data"
+from aocdifficulty.params import *
 
 
 def get_leaderboard(year: int, day: int):
@@ -38,7 +38,7 @@ def get_leaderboard(year: int, day: int):
         if day > 25:
             day -= 10
 
-    leader_path = os.path.join(data_dir, str(year), f"{day}.pkl")
+    leader_path = os.path.join(DATA_PATH, str(year), f"{day}.pkl")
 
     if not os.path.isfile(leader_path):
         one_star_results, two_star_results = scrape_leaderboard(year, day)
@@ -54,7 +54,6 @@ def get_leaderboard(year: int, day: int):
                             file=file)
 
     else:
-        print("Using cached data")
         with open(leader_path, 'rb') as file:
             data = pickle.load(file)
             one_star_results, two_star_results = data

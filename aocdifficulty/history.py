@@ -10,8 +10,9 @@ from aocdifficulty.scraper import get_leaderboard
 
 json_url = "https://raw.githubusercontent.com/topaz/aoc-tmp-stats/master/aoc-2015-2021-stats.json"
 
-data_dir = "data"
-json_path = os.path.join(data_dir, "history.json")
+from aocdifficulty.params import *
+
+json_path = os.path.join(DATA_PATH, "history.json")
 
 
 def first_100_history() -> (pd.DataFrame, pd.DataFrame):
@@ -76,8 +77,6 @@ def load_history_json() -> dict:
 
         with open(json_path, 'w') as file:
             file.write(json_data)
-    else:
-        print("Using cached json")
 
     with open(json_path) as file:
         history = json.load(file)
@@ -115,7 +114,7 @@ def load_leaderboards(year: int):
     year : int
         Year for which to get the data
     """
-    leader_path = os.path.join(data_dir, f"{year}.pkl")
+    leader_path = os.path.join(DATA_PATH, f"{year}.pkl")
 
     if not os.path.isfile(leader_path):
         print(f"Scraping the leaderboards for year {year}")
@@ -124,7 +123,6 @@ def load_leaderboards(year: int):
             pickle.dump(obj=[df_one, df_two], file=file)
 
     else:
-        print("Using cached data")
         with open(leader_path, 'rb') as file:
             data = pickle.load(file)
             df_one, df_two = data
