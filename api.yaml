@@ -1,0 +1,1 @@
+entrypoint: gunicorn api.fast:app -w 2 -k uvicorn.workers.UvicornWorker -b :$PORT
