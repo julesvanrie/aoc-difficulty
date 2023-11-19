@@ -1,7 +1,7 @@
 numpy
 pandas<2.0.0
 fastapi
-# uvicorn
+uvicorn
 gunicorn
 requests
 beautifulsoup4

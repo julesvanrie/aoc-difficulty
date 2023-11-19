@@ -1,1 +1,3 @@
+runtime: python310
+
 entrypoint: gunicorn api.fast:app -w 2 -k uvicorn.workers.UvicornWorker -b :$PORT
