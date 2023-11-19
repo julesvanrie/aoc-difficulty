@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all headers
 )
 
-app.state.history_one, app.state.history_two = first_100_history()
+app.state.history = first_100_history()
 
 today = datetime.today()
 
@@ -32,31 +32,30 @@ def score(year: int = today.year, day: int = today.day):
     ):
         return {'error': 'Combination of year and day is not (yet) a valid AOC day'}
 
-    leaders_one, leaders_two = get_leaderboard(year=year, day=day)
+    leaders = get_leaderboard(year=year, day=day)
 
-    level = 2 if len(leaders_two) else 1
-    leaders = leaders_two if len(leaders_two) else leaders_one
-    time = leaders[-1]
-    pos = len(leaders)
-
-    final = True if (level == 2 and pos == 100) else False
-
-    history = app.state.history_one if level == 1 else app.state.history_two
-
-    # import pdb; pdb.set_trace()
-
-    score = difficulty_score(time=time, pos=pos, history=history)
-    quartile = difficulty_quartile(time=time, pos=pos, history=history)
-
-    return {
+    result = {
         'year': year,
         'day': day,
-        'score': score,
-        'quartile': quartile,
-        'final': final,
-        'based_on': {
+    }
+
+    for level in [1,2]:
+        time = leaders[level-1][-1]
+        pos = len(leaders[level-1])
+
+        final = True if pos == 100 else False
+
+        score = difficulty_score(time=time, pos=pos,
+                                 history=app.state.history[level-1])
+        quartile = difficulty_quartile(time=time, pos=pos,
+                                       history=app.state.history[level-1])
+        result[str(level)] = {
+            'score': score,
+            'quartile': quartile,
+            'final': final,
             'level': level,
             'pos': pos,
             'time': time,
         }
-    }
+
+    return result
