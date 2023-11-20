@@ -2,6 +2,7 @@ import os
 import json
 import pickle
 from datetime import datetime
+from pytz import timezone
 import requests
 import numpy as np
 import pandas as pd
@@ -14,12 +15,15 @@ from aocdifficulty.params import *
 
 json_path = os.path.join(DATA_PATH, "history.json")
 
+eric_wastl_tz = timezone('US/Eastern')
+today = datetime.now(eric_wastl_tz)
+
 
 def first_100_history() -> (pd.DataFrame, pd.DataFrame):
     df_one = make_history_df(1)
     df_two = make_history_df(2)
     last_year = df_one.index.get_level_values(0).max()
-    for year in range(last_year+1, datetime.today().year):
+    for year in range(last_year+1, today.year):
         new_one, new_two = load_leaderboards(year)
         df_one = pd.concat([df_one, new_one])
         df_two = pd.concat([df_two, new_two])

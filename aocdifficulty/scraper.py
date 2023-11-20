@@ -2,6 +2,7 @@ import os
 import json
 import pickle
 from datetime import datetime
+from pytz import timezone
 import numpy as np
 import pandas as pd
 
@@ -28,7 +29,8 @@ def get_leaderboard(year: int, day: int):
     list, list
         Two lists, with the times for the one star and two star
     """
-    today = datetime.today()
+    eric_wastl_tz = timezone('US/Eastern')
+    today = datetime.now(eric_wastl_tz)
     if not year:
         year = today.year
         if today.month != 12:

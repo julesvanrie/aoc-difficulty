@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from datetime import datetime
+from pytz import timezone
 
 app = FastAPI()
 
@@ -20,7 +21,8 @@ app.add_middleware(
 
 app.state.history = first_100_history()
 
-today = datetime.today()
+eric_wastl_tz = timezone('US/Eastern')
+today = datetime.now(eric_wastl_tz)
 
 @app.get("/score")
 def score(year: int = today.year, day: int = today.day):
