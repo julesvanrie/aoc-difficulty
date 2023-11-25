@@ -42,6 +42,18 @@ def score(year: int = today.year, day: int = today.day):
     }
 
     for level in [1,2]:
+        # Edge case: nobody solved the level yet
+        if len(leaders[level-1]) == 0:
+            result[str(level)] = {
+                'score': "Nobody solved it yet",
+                'quartile': "Nobody solved it yet",
+                'final': False,
+                'level': 2,
+                'pos': 0,
+                'time': today.hour*60 + today.minute + today.second/60,
+            }
+            continue
+
         time = leaders[level-1][-1]
         pos = len(leaders[level-1])
 

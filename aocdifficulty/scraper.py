@@ -104,11 +104,14 @@ def scrape_leaderboard(year: int, day: int):
     # On the website, the two stars are shown first
     one_star_results = []
     two_star_results = []
-    for i in range(0, min(100, len(positions))):
-        two_star_results.append(times[i])
-        # If the next position is 1, then we have reached the one stars
-        if positions[i+1] == 1:
-            break
+    # First a quick check for the case where there are no two stars yet,
+    # or even no stars at all
+    if positions and len(positions) != positions[-1]:
+        for i in range(0, min(100, len(positions))):
+            two_star_results.append(times[i])
+            # If the next position is 1, then we have reached the one stars
+            if positions[i+1] == 1:
+                break
 
     # Start again to get the one star results
     # Anything remaining in times is a one star result
