@@ -39,3 +39,6 @@ __pycache__/
 # Direnv files
 .envrc
 .env
+
+# Test cases
+data/testcases/

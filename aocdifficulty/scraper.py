@@ -85,6 +85,10 @@ def scrape_leaderboard(year: int, day: int):
     url = f"https://adventofcode.com/{year}/leaderboard/day/{day}"
     page = requests.get(url=url).text
 
+    if TESTING:
+        with open(f'data/testcases/{day}.html') as file:
+            page = file.read()
+
     # Get positions and times
     soup = BeautifulSoup(page, 'html.parser')
     positions = [int(entry.contents[0][:-1].strip())
