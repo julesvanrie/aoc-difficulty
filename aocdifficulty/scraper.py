@@ -45,7 +45,7 @@ def get_leaderboard(year: int, day: int):
     # Load file if it already exists, if not, try in the temp location
     if not os.path.isfile(leader_path):
         leader_path = os.path.join(TMP_LEADERBOARD_PATH, str(year), f"{day}.pkl")
-    if os.path.isfile(leader_path):
+    if os.path.isfile(leader_path) and not TESTING:
         with open(leader_path, 'rb') as file:
             data = pickle.load(file)
             return data
@@ -85,6 +85,10 @@ def scrape_leaderboard(year: int, day: int):
     url = f"https://adventofcode.com/{year}/leaderboard/day/{day}"
     page = requests.get(url=url).text
 
+    if TESTING:
+        with open(f'data/testcases/{day}.html') as file:
+            page = file.read()
+
     # Get positions and times
     soup = BeautifulSoup(page, 'html.parser')
     positions = [int(entry.contents[0][:-1].strip())
@@ -100,15 +104,19 @@ def scrape_leaderboard(year: int, day: int):
     # On the website, the two stars are shown first
     one_star_results = []
     two_star_results = []
-    for i in range(0, min(100, len(positions)+1)):
-        two_star_results.append(times[i])
-        # If the next position is 1, then we have reached the one stars
-        if positions[i+1] == 1:
-            break
+    # First a quick check for the case where there are no two stars yet,
+    # or even no stars at all
+    if positions and len(positions) != positions[-1]:
+        for i in range(0, min(100, len(positions))):
+            two_star_results.append(times[i])
+            # If the next position is 1, then we have reached the one stars
+            if positions[i+1] == 1:
+                break
+
     # Start again to get the one star results
     # Anything remaining in times is a one star result
     start_of_one_star = len(two_star_results)
-    for i in range(start_of_one_star, len(times)):
+    for i in range(start_of_one_star, len(positions)):
         one_star_results.append(times[i])
 
     return one_star_results, two_star_results
