@@ -1,16 +1,16 @@
 # AOC Difficulty Assessor
 
-Assess the difficulty of Advent of Code puzzles as they get solved by the first contendors.
+Assess the difficulty of Advent of Code puzzles as they get solved by the first contenders.
 
-This first version compares the time it took for the first 100 contendor to get 1 or 2 stars to historical data.
+This first version compares the time it took for the first 100 contender to get 1 or 2 stars to historical data.
 
-Ideally, the times for the first 100 contendors of the day are know. In that case, the time of the 100th contendor is compared to historical data.
+Ideally, the times for the first 100 contenders of the day are know. In that case, the time of the 100th contender is compared to historical data.
 
-If for the 2 stars and/or the 1 stars, there are not yet 100 contendors who solved the puzzle, the time for the last known contendor is used and compared to the historical times for that rank.
+If for the 2 stars and/or the 1 stars, there are not yet 100 contenders who solved the puzzle, the time for the last known contender is used and compared to the historical times for that rank.
 
-The quartile compares gives the quartile of today's times against historical data.
+The quartile gives the quartile of today's times against historical data (with 1 being the fastest quartile and 4 the slowest). If the puzzle got solved faster than any other puzzle ever, the quartile returned by 1. If the puzzle took more time than any puzzle ever, 5 is returned instead of a quartile.
 
-The score is calculated by taking the natural logaritm of today's time and scaling it on historical times:
+The score is calculated by taking the natural logarithm of today's time and scaling it on historical times:
 
 $$\frac{\ln{t_\textrm{today}} - \ln{t_\textrm{shortest ever}}} {\ln{t_\textrm{longest ever}} - \ln{t_\textrm{shortest ever}}}$$
 

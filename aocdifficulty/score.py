@@ -20,8 +20,13 @@ def difficulty_quartile(time: float, pos: int = 100, history: pd.DataFrame = Non
         If None, loads history for level 2
     Returns
     -------
-    int (0 to 5)
-        Quartile: from 0 (faster than ever) to 5 (slower than ever)
+    int (1 to 5)
+        Quartile:
+        - 1 fastest quartile (or faster)
+        - 2 second quartile
+        - 3 third quartile
+        - 4 fourth quartile
+        - 5 slower than ever
     """
     if history is None:
         _, history = first_100_history()
@@ -37,7 +42,7 @@ def difficulty_quartile(time: float, pos: int = 100, history: pd.DataFrame = Non
     if time < history[pos].quantile(0.25):
         difficulty = 1
     if time < history[pos].quantile(0.00):
-        difficulty = 0
+        difficulty = 1
 
     return difficulty
 
