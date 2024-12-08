@@ -5,3 +5,5 @@ uvicorn
 gunicorn
 requests
 beautifulsoup4
+seaborn
+ipywidgets
