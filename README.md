@@ -8,7 +8,7 @@ Ideally, the times for the first 100 contenders of the day are know. In that cas
 
 If for the 2 stars and/or the 1 stars, there are not yet 100 contenders who solved the puzzle, the time for the last known contender is used and compared to the historical times for that rank.
 
-The quartile gives the quartile of today's times against historical data (with 1 being the fastest quartile and 4 the slowest). If the puzzle got solved faster than any other puzzle ever, the quartile returned by 1. If the puzzle took more time than any puzzle ever, 5 is returned instead of a quartile.
+The quartile gives the quartile of today's times against historical data (with 1 being the fastest quartile and 4 the slowest). If the puzzle got solved faster than any other puzzle ever, the quartile returned is 1. If the puzzle took more time than any puzzle ever, 5 is returned instead of a quartile.
 
 The score is calculated by taking the natural logarithm of today's time and scaling it on historical times:
 
